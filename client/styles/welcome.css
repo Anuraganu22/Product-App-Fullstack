@@ -1,0 +1,14 @@
+@import url('variables.css');
+
+body {
+    background-color: var(--primary-color);
+  }
+  .container {
+    text-align: center;
+    margin-top: 100px;
+  }
+  .jumbotron {
+    background-color: var(--dark-color);
+    color: #fff;
+    padding: 20px;
+  }
