@@ -97,6 +97,33 @@ app.post('/products', PassportInstance.authenticate(), (req, res) => {
 
 
 
+
+
+// Add the following route to your code
+app.get('/productslist', PassportInstance.authenticate(), (req, res) => {
+  // Ensure that only authenticated users can access the product list
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const query = 'SELECT * FROM products';
+
+  db.all(query, [], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
+    res.json({
+      success: true,
+      products: rows,
+    });
+  });
+});
+
+
+
+
+
 //start server
 const PORT = 3010;
 app.listen(PORT, () => {
