@@ -10,7 +10,7 @@ const jwtConfig = require("../../utils/jwtConfig");
 const { authenticateToken } = require("../../utils/authMiddileware");
 
 // API to check if the user is already created
-router.get(AppRoutes.GetUser, (req, res) => {
+router.get(AppRoutes.GetUser, authenticateToken,(req, res) => {
   const { username, password } = req.body;
   // Query the database to check for the user
   db.get(AppQueries.GetAllUserQueries, [username], (err, row) => {
