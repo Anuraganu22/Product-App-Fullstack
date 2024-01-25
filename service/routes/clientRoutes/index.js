@@ -18,4 +18,7 @@ router.get(ClientRoutes.Login, (req, res) => {
 router.get(ClientRoutes.Home, (req, res) => {
   res.sendFile(path.join(clientPath, "AuthPages/home/home.html"));
 });
+router.get(ClientRoutes.Order, (req, res) => {
+  res.sendFile(path.join(clientPath, "AuthPages/home/order.html"));
+});
 module.exports = router;

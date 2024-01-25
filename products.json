@@ -1,7 +1,7 @@
 [
     {
       "id": 1,
-      "image": "https://example.com/product1.jpg",
+      "image": "https://m.media-amazon.com/images/I/615-1qhF7DL._AC_UY218_.jpg",
       "description": "Premium noise-canceling headphones for an immersive audio experience. Enjoy crystal-clear sound and comfortable design.",
       "price": 199.99,
       "title": "AudioZen Pro Headphones",
@@ -9,7 +9,7 @@
     },
     {
       "id": 2,
-      "image": "https://example.com/product2.jpg",
+      "image": "https://m.media-amazon.com/images/I/51NABYQtfoL._AC_UY218_.jpg",
       "description": "Smart fitness tracker with heart rate monitoring, sleep analysis, and water resistance. Achieve your health goals effortlessly.",
       "price": 79.99,
       "title": "FitTech Smart Band",
@@ -17,7 +17,7 @@
     },
     {
       "id": 3,
-      "image": "https://example.com/product3.jpg",
+      "image": "https://m.media-amazon.com/images/I/414S+6sYauL._AC_UL320_.jpg",
       "description": "Eco-friendly reusable water bottle with a stylish design. Stay hydrated on the go while reducing plastic waste.",
       "price": 14.99,
       "title": "EcoHydrate Water Bottle",
@@ -25,7 +25,7 @@
     },
     {
       "id": 4,
-      "image": "https://example.com/product4.jpg",
+      "image": "https://m.media-amazon.com/images/I/61zFXDCozGL._AC_UY218_.jpg",
       "description": "Compact and powerful blender for smoothies and shakes. Features multiple speed settings and easy-to-clean design.",
       "price": 49.99,
       "title": "BlendMaster Pro Blender",
@@ -33,7 +33,7 @@
     },
     {
       "id": 5,
-      "image": "https://example.com/product5.jpg",
+      "image": "https://m.media-amazon.com/images/I/71fP4RCrKiL._AC_UY218_.jpg",
       "description": "High-performance gaming laptop with dedicated graphics. Immerse yourself in the latest games with stunning visuals.",
       "price": 1299.99,
       "title": "GamerFlex X1 Laptop",
@@ -41,7 +41,7 @@
     },
     {
       "id": 6,
-      "image": "https://example.com/product6.jpg",
+      "image": "https://m.media-amazon.com/images/I/415HN8-2qNL._AC_UY218_.jpg",
       "description": "Wireless charging pad compatible with all Qi-enabled devices. Sleek design for a clutter-free charging experience.",
       "price": 29.99,
       "title": "WirelessCharge Hub",
@@ -49,7 +49,7 @@
     },
     {
       "id": 7,
-      "image": "https://example.com/product7.jpg",
+      "image": "https://m.media-amazon.com/images/I/61DYnFvLi8L._AC_UY218_.jpg",
       "description": "Premium coffee maker with customizable brewing options. Start your day with the perfect cup of coffee.",
       "price": 89.99,
       "title": "BrewMaster Elite Coffee Maker",
@@ -57,7 +57,7 @@
     },
     {
       "id": 8,
-      "image": "https://example.com/product8.jpg",
+      "image": "https://m.media-amazon.com/images/I/61kIl305+tL._AC_UY218_.jpg",
       "description": "Durable and stylish laptop backpack with multiple compartments. Perfect for professionals on the go.",
       "price": 49.99,
       "title": "TechSavvy Backpack",
@@ -65,7 +65,7 @@
     },
     {
       "id": 9,
-      "image": "https://example.com/product9.jpg",
+      "image": "https://m.media-amazon.com/images/I/512opRRqlIL._AC_UY218_.jpg",
       "description": "Smart home security camera with motion detection and two-way audio. Keep your home safe and connected.",
       "price": 119.99,
       "title": "SecureCam Pro",
@@ -73,7 +73,7 @@
     },
     {
       "id": 10,
-      "image": "https://example.com/product10.jpg",
+      "image": "https://m.media-amazon.com/images/I/41rhnJwjuSL._AC_UY218_.jpg",
       "description": "Portable external hard drive with massive storage capacity. Back up your important files with ease.",
       "price": 79.99,
       "title": "DataVault Plus",
@@ -81,7 +81,7 @@
     },
     {
       "id": 11,
-      "image": "https://example.com/product11.jpg",
+      "image": "https://m.media-amazon.com/images/I/81FsiUBcq1L._AC_UL320_.jpg",
       "description": "Ultra-thin LED desk lamp with adjustable brightness. Illuminate your workspace with style and precision.",
       "price": 34.99,
       "title": "LuminaFlex Desk Lamp",
@@ -89,7 +89,7 @@
     },
     {
       "id": 12,
-      "image": "https://example.com/product12.jpg",
+      "image": "https://m.media-amazon.com/images/I/515ypRlGieL._AC_UY218_.jpg",
       "description": "Advanced air purifier with HEPA filtration. Breathe clean and fresh air in your home or office.",
       "price": 149.99,
       "title": "AirPure Pro",
@@ -97,7 +97,7 @@
     },
     {
       "id": 13,
-      "image": "https://example.com/product13.jpg",
+      "image": "https://m.media-amazon.com/images/I/51Zdo2UDvUL._AC_UL320_.jpg",
       "description": "Professional-grade camera drone with 4K video recording. Capture stunning aerial shots and videos.",
       "price": 499.99,
       "title": "SkyVision Drone",
@@ -105,7 +105,7 @@
     },
     {
       "id": 14,
-      "image": "https://example.com/product14.jpg",
+      "image": "https://m.media-amazon.com/images/I/71ASeVFc6BL._AC_UL320_.jpg",
       "description": "Classic leather watch with automatic movement. Enhance your style with this timeless timepiece.",
       "price": 129.99,
       "title": "TimeMaster Classic Watch",
@@ -113,7 +113,7 @@
     },
     {
       "id": 15,
-      "image": "https://example.com/product15.jpg",
+      "image": "https://m.media-amazon.com/images/I/6138VS-vvfL._AC_UY218_.jpg",
       "description": "Portable Bluetooth speaker with 360-degree sound. Bring the party wherever you go.",
       "price": 69.99,
       "title": "SoundWave Blast Speaker",
@@ -121,7 +121,7 @@
     },
     {
       "id": 16,
-      "image": "https://example.com/product16.jpg",
+      "image": "https://m.media-amazon.com/images/I/511pD3c3ZAL._AC_UL320_.jpg",
       "description": "Gourmet kitchen knife set with precision blades. Elevate your culinary skills with these high-quality knives.",
       "price": 99.99,
       "title": "ChefCraft Knife Set",
@@ -129,7 +129,7 @@
     },
     {
       "id": 17,
-      "image": "https://example.com/product17.jpg",
+      "image": "https://m.media-amazon.com/images/I/51FpBbX5vhL._AC_UL320_.jpg",
       "description": "Stylish fitness apparel set for men. Stay comfortable and motivated during your workouts.",
       "price": 49.99,
       "title": "FitFlex Men's Workout Set",
@@ -137,7 +137,7 @@
     },
     {
       "id": 18,
-      "image": "https://example.com/product18.jpg",
+      "image": "https://m.media-amazon.com/images/I/71P5QJEcfRL._AC_UY218_.jpg",
       "description": "Wireless ergonomic mouse with customizable buttons. Boost your productivity with precision and comfort.",
       "price": 39.99,
       "title": "ErgoMouse Pro",
@@ -145,7 +145,7 @@
     },
     {
       "id": 19,
-      "image": "https://example.com/product19.jpg",
+      "image": "https://m.media-amazon.com/images/I/61w6PI0LA3L._AC_UL320_.jpg",
       "description": "Luxurious skincare set with natural ingredients. Pamper your skin and achieve a radiant complexion.",
       "price": 79.99,
       "title": "GlowEssence Skincare Set",
@@ -153,7 +153,7 @@
     },
     {
       "id": 20,
-      "image": "https://example.com/product20.jpg",
+      "image": "https://m.media-amazon.com/images/I/71iZ6Dx+JPL._AC_UY218_.jpg",
       "description": "Ultra-lightweight travel backpack with anti-theft features. Explore the world with convenience and security.",
       "price": 59.99,
       "title": "TravelGuard Backpack",

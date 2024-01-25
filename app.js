@@ -45,6 +45,8 @@ productDatabase()
   })
   .then((wishlistMessage) => {
     console.log(wishlistMessage);
+
+
 // Endpoint to insert product data
 app.post('/products', PassportInstance.authenticate(), (req, res) => {
   // Ensure that only authenticated users can add products
@@ -97,15 +99,9 @@ app.post('/products', PassportInstance.authenticate(), (req, res) => {
 
 
 
+ // Endpoint to  Productslist
 
-
-// Add the following route to your code
-app.get('/productslist', PassportInstance.authenticate(), (req, res) => {
-  // Ensure that only authenticated users can access the product list
-  if (!req.isAuthenticated()) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-
+app.get('/productslist', (req, res) => {
   const query = 'SELECT * FROM products';
 
   db.all(query, [], (err, rows) => {
@@ -119,6 +115,8 @@ app.get('/productslist', PassportInstance.authenticate(), (req, res) => {
     });
   });
 });
+
+
 
 
 

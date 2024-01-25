@@ -8,7 +8,8 @@ const ClientRoutes = {
     Base: '/client',
     Login : '/login',
     Register: '/register',
-    Home:'/home'
+    Home:'/home',
+    Order:'/order'
 }
 
 module.exports = {ClientRoutes,AppRoutes};
