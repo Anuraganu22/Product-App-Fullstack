@@ -45,6 +45,8 @@ productDatabase()
   })
   .then((wishlistMessage) => {
     console.log(wishlistMessage);
+
+
 // Endpoint to insert product data
 app.post('/products', PassportInstance.authenticate(), (req, res) => {
   // Ensure that only authenticated users can add products
@@ -94,6 +96,29 @@ app.post('/products', PassportInstance.authenticate(), (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+
+ // Endpoint to  Productslist
+
+app.get('/productslist', (req, res) => {
+  const query = 'SELECT * FROM products';
+
+  db.all(query, [], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
+    res.json({
+      success: true,
+      products: rows,
+    });
+  });
+});
+
+
+
+
 
 
 
