@@ -3,13 +3,23 @@
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
   integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
+<link rel="stylesheet" href="./index.css">
 <!-- Axios library -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
 <script>
   function fetchData() {
-    axios.get('http://localhost:3010/productslist') 
+    const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
+    if (!token) {
+      // Redirect to login page or handle unauthorized access
+      window.location.href = '/login';
+      return;
+    }
+
+    axios.get('http://localhost:3010/productslist', {
+      headers: {
+        Authorization: token
+      }
+    })
       .then(response => {
         const data = response.data.products;
         console.log('API Response:', data);
@@ -18,27 +28,92 @@
           createCard(product);
         });
       })
-      .catch(error => console.error('Error:', error));
+      .catch(error => {
+        if (error.response.status === 401) {
+          // Handle unauthorized access
+          window.location.href = '/login';
+        } else {
+          console.error('Error:', error);
+          // Handle other errors
+        }
+      });
   }
-  function createCard(product) {
-  var card = document.createElement('div');
-  card.className = 'col';
-  card.innerHTML = `
-    <div class="card">
-      <img src="${product.image}" class="card-img-top" alt="${product.productName}" style="height: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">${product.productName}</h5>
-        <p class="card-text">${product.description}</p>
-        <p class="card-text">${'$' + product.price.toFixed(2)}</p>
-        <button class="btn btn-primary">Add to Cart</button>
-        <button class="btn btn-secondary">Add to Wish List</button>
-      </div>
-    </div>
-  `;
 
-  // Append card to the container
-  document.getElementById('cardsContainer').appendChild(card);
-}
+  function createCard(product) {
+    var card = document.createElement('div');
+    card.className = 'col';
+    card.innerHTML = `
+      <div class="card">
+        <img src="${product.image}" class="card-img-top" alt="${product.productName}" style="height: 200px;">
+        <div class="card-body">
+          <h5 class="card-title">${product.productName}</h5>
+          <p class="card-text">${product.description}</p>
+          <p class="card-text">${'$' + product.price.toFixed(2)}</p>
+          <button class="btn btn-primary">Add to Cart</button>
+          <button class="btn btn-secondary" onclick="addToWishlist(${product.id})">Add to Wish List</button>
+        </div>
+      </div>
+    `;
+    console.log('product.productId', product.id);
+
+    // Append card to the container
+    document.getElementById('cardsContainer').appendChild(card);
+  }
+
+  function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+  }
+
+  function addToWishlist(productId) {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      // Display an error message or alert
+      alert('You need to log in to add items to your wishlist.');
+      return; // Return here to prevent further execution
+    }
+
+    // Decode the token to get the user ID
+    const decodedToken = parseJwt(token);
+    const userId = decodedToken.userID;
+    console.log(decodedToken, 'decodedToken');
+
+    if (!userId) {
+      // Handle scenario where the decoded user ID is missing
+      alert('Unable to retrieve user information. Please try again.');
+      return; // Return here to prevent further execution
+    }
+
+    const payload = {
+      productId: productId,
+      userId: userId
+
+    };
+    console.log('payload', payload);
+
+    axios.post('http://localhost:3010/wishlist', payload, {
+      headers: {
+        Authorization: token
+      }
+    })
+      .then(response => {
+        console.log('Item added to wishlist:', response.data);
+        // Update UI or show success message
+      })
+      .catch(error => {
+        console.error('Error adding to wishlist:', error);
+        // Handle errors
+      });
+  }
+
+
+
 
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -46,7 +121,54 @@
   });
 </script>
 
+
+
+
+
 <body>
+  <header class="bg-dark py-3">
+    <div class="container-fluid">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-auto">
+          <a href="/home"  data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+          <h3 class="text-white">Shopping Page</h3></a>
+        </div>
+        <div class="loginbtn" style="display: flex">
+
+          <div class="col-auto">
+            <a href="/WishListPage" class="text-white"> <!-- Replace "/cart" with the actual link to your cart page -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                class="bi bi-bag-heart-fill" viewBox="0 0 16 16">
+                <path
+                  d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132" />
+              </svg>
+            </a>
+
+            <a href="/cart" class="text-white"> <!-- Replace "/cart" with the actual link to your cart page -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-cart-fill"
+                viewBox="0 0 16 16">
+                <path
+                  d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+              </svg>
+            </a>
+
+          </div>
+          <div id="logoutBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-box-arrow-right"
+              viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
+              <path fill-rule="evenodd"
+                d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+
   <div class="container-fluid">
     <div class="row flex-nowrap">
       <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
@@ -68,7 +190,7 @@
               </a>
             </li>
             <li>
-              <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+              <a href="/WishListPage"  data-bs-toggle="collapse" class="nav-link px-0 align-middle">
                 <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Wish List</span> </a>
           </ul>
           <hr>
@@ -76,11 +198,14 @@
       </div>
 
       <div class="col py-3">
-        <div class="row row-cols-3 g-4" id="cardsContainer">
+        <div class="row row-cols-4 g-4" id="cardsContainer">
         </div>
       </div>
     </div>
   </div>
+  <!-- Add this line to include the jsonwebtoken library -->
+
+  <script src="../../scripts/logoutScript.js"></script>
 </body>
 
 </html>

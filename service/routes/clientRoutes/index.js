@@ -21,4 +21,13 @@ router.get(ClientRoutes.Home, (req, res) => {
 router.get(ClientRoutes.Order, (req, res) => {
   res.sendFile(path.join(clientPath, "AuthPages/home/order.html"));
 });
+
+router.get(ClientRoutes.Cart, (req, res) => {
+  res.sendFile(path.join(clientPath, "AuthPages/cart/cart.html"));
+});
+router.get(ClientRoutes.WishList, (req, res) => {
+  res.sendFile(path.join(clientPath, "AuthPages/WishListPage/WishListPage.html"));
+});
+
+
 module.exports = router;

@@ -4,68 +4,45 @@ const db = require("../../../db");
 const AppQueries = require("../../utils/queries");
 const { AppRoutes } = require("../../constants");
 const returnError = require("../../utils/errorHandler");
-const PassportInstance = require("../../utils/passport");
-const jwt = require("jsonwebtoken");
-const jwtConfig = require("../../utils/jwtConfig");
 const { authenticateToken } = require("../../utils/authMiddileware");
+const { addToWishlistRoute } = require("./wishLists");
+const { ProductList } = require("./productList");
+const viewWishlist = require("./viewWishList");
+const { RegisterRouts, UserCheck } = require("./registerRouts");
 
-// API to check if the user is already created
-router.get(AppRoutes.GetUser, authenticateToken,(req, res) => {
-  const { username, password } = req.body;
-  // Query the database to check for the user
-  db.get(AppQueries.GetAllUserQueries, [username], (err, row) => {
-    if (err) {
-      console.error("SQLite query error:", err);
-      res.status(500).send("Internal Server Error");
-    } else {
-      if (row) {
-        res.json(row);
+
+
+//check if the user is already created
+router.get(AppRoutes.GetUser, authenticateToken, UserCheck)
+
+// Register endpoint
+router.post(AppRoutes.RegisterUser, RegisterRouts)
+
+//Add to wishList Api
+// router.post( AppRoutes.WishList,addToWishlistRoute);
+
+//Product List Api
+// router.get(AppRoutes.Products, authenticateToken, ProductList);
+
+// //ViewProductList Api
+// router.get(AppRoutes.ViewWishList, viewWishlist)
+
+
+router.delete('/users', (req, res) => {
+  db.serialize(() => {
+    db.run("DROP TABLE IF EXISTS users", (err) => {
+      if (err) {
+        console.error(err.message);
+        res.status(500).json({ error: 'Internal Server Error' });
       } else {
-        res.send("Invalid username or password");
+        res.json({ message: 'User table deleted successfully' });
       }
-    }
+    });
   });
 });
 
-// Register endpoint
-router.post(AppRoutes.RegisterUser, (req, res) => {
-  const { username, password } = req.body;
-  if (username && password) {
-    // Insert the new user into the 'users' table
-    db.get(AppQueries.CheckUserExists, [username], (err, existingUser) => {
-      if (err) {
-        console.error("Error registering user:", err);
-        res.status(500).send("Internal Server Error");
-        returnError();
-      } else if (existingUser) {
-        res.status(400);
-        res.json({ userAlreadyRegistered: true });
-      } else {
-        db.run(AppQueries.AddAUserQuery, [username, password], (err) => {
-          if (err) {
-            console.error("Error registering user:", err);
-            res.status(500).send("Internal Server Error");
-            returnError();
-          } else {
-            const token = jwt.sign(
-              { username: username },
-              jwtConfig.secretKey,
-              {
-                expiresIn: jwtConfig.expiresIn,
-              }
-            );
-            res.status(200);
-            res.json({ success:true , token });
-          }
-        });
-      }
-    });
-  } else {
-    res.status(400);
-    returnError();
-  }
-});
-// Register endpoint
+// delete endpoint
+
 router.delete(AppRoutes.DeleteUser, (req, res) => {
   const userId = req.params.id;
   if (userId) {
@@ -76,7 +53,7 @@ router.delete(AppRoutes.DeleteUser, (req, res) => {
         returnError();
         res.status(500).send("Internal Server Error");
       } else {
-        const changes = this.changes; 
+        const changes = this.changes;
         if (changes > 0) {
           res.json({
             success: true,
@@ -93,5 +70,6 @@ router.delete(AppRoutes.DeleteUser, (req, res) => {
     returnError();
   }
 });
+
 
 module.exports = router;

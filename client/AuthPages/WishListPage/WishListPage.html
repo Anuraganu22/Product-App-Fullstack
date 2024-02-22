@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+  <title>Wishlist</title>
+</head>
+
+<body>
+  <h1>Wishlist Items</h1>
+  <ul id="wishlist-items"></ul>
+
+
+  <style>
+    #wishlist-items {
+      list-style-type: none;
+      /* Remove bullets */
+
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+
+    let userId
+    // Function to decode JWT token
+    function parseJwt(token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+
+      return JSON.parse(jsonPayload);
+      console.log('jsonPayload', jsonPayload);
+    }
+
+// Inside fetchWishlist function
+function fetchWishlist(userId) {
+  console.log('userId', userId);
+  // Clear previous wishlist items
+  const wishlistItemsElement = document.getElementById('wishlist-items');
+  wishlistItemsElement.innerHTML = '';
+
+  fetch(`/viewwishlist/${userId}`)
+    .then(response => response.json())
+    .then(data => {
+      // Update the HTML with the wishlist items
+      data.wishlist.forEach(item => {
+        const listItem = document.createElement('li');
+        listItem.textContent = item.name; // Assuming each wishlist item has a 'name' property
+        listItem.setAttribute('data-product-id', item.product_id); // Set data-product-id attribute
+        wishlistItemsElement.appendChild(listItem);
+      });
+      // Call the function to fetch products based on wishlist items
+      fetchProducts(data.wishlist, userId); // Pass userId to fetchProducts
+    })
+    .catch(error => console.error('Error fetching wishlist:', error));
+} 
+
+
+
+function deleteWishlistItem(productId, userId) {
+  console.log('productId, userId', productId, userId);
+  axios.delete(`/wishlist/${productId}/${userId}`)
+    .then(response => {
+      console.log('Delete response:', response.data.message);
+      const wishlistItemsElement = document.getElementById('wishlist-items');
+      const listItemToRemove = wishlistItemsElement.querySelector(`li[data-product-id="${productId}"]`);
+      if (listItemToRemove) {
+        listItemToRemove.remove();
+      } else {
+        console.error('Error: Item not found in the wishlist UI.');
+      }
+    })
+    .catch(error => console.error('Error deleting wishlist item:', error));
+}
+
+
+
+    // Function to create product card
+    function createProductCard(product, userId) {
+     
+      var card = document.createElement('div');
+      card.className = 'col';
+      card.innerHTML = `
+        <div class="card">
+          <img src="${product.image}" class="card-img-top" alt="${product.productName}" style="height: 200px;">
+          <div class="card-body">
+            <h5 class="card-title">${product.productName}</h5>
+            <p class="card-text">${product.description}</p>
+            <p class="card-text">${'$' + product.price.toFixed(2)}</p>
+            <button class="btn btn-primary">Add to Cart</button>
+            <button class="btn btn-secondary" onclick="addToWishlist(${product.id})">Buy Now</button>
+            <button class="btn btn-danger delete-button" onclick="deleteWishlistItem(${product.id}, '${userId}')">Delete</button>
+
+
+          </div>
+        </div>
+      `;
+      // Append card to the container
+      document.getElementById('cardsContainer').appendChild(card);
+    }
+
+
+
+    // Function to fetch products based on wishlist items
+
+    function fetchProducts(wishlist) {
+      // Extract product IDs from wishlist items
+      const productIds = wishlist.map(item => item.product_id);
+      console.log('productIds', productIds);
+
+
+      // Make API call to fetch products with the extracted product IDs
+      axios.get('http://localhost:3010/productslist')
+        .then(response => {
+          console.log('Response:', response); // Log the entire response object
+          if (response.data.products) {
+            console.log('Products:', response.data.products);
+            // Filter products based on wishlist item product IDs
+
+            const filteredProducts = response.data.products.filter(product => productIds.includes(product.id));
+            console.log('Filtered Products:', filteredProducts); // Check filtered products
+            // Clear previous products
+            document.getElementById('cardsContainer').innerHTML = '';
+            // Create and append product cards
+            filteredProducts.forEach(product => {
+              createProductCard(product);
+            });
+          } else {
+            console.error('Error: Invalid response or product list is not an array.');
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching products:', error);
+        });
+    }
+
+
+
+    // Call the fetchWishlist function with the decoded user ID when the page loads
+    if (!window.deleteWishlistItem) {
+  window.deleteWishlistItem = deleteWishlistItem;
+}
+
+// Call deleteWishlistItem within window.onload
+window.onload = function () {
+  const token = localStorage.getItem('token');
+  if (token) {
+    const decodedToken = parseJwt(token);
+    const userId = decodedToken.userID;
+    fetchWishlist(userId);
+  } else {
+    console.error('Token not found in local storage');
+  }
+};
+
+  </script>
+
+  <script src="../home/header.html"></script>
+
+  <div class="col py-3">
+
+
+    <div class="row row-cols-5 g-4" id="cardsContainer">
+    </div>
+  </div>
+</body>
+
+</html>
